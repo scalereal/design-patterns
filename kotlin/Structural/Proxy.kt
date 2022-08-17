@@ -1,20 +1,20 @@
 interface File {
-    fun read(name: String)
+    fun read()
 }
 
-class NormalFile : File {
-    override fun read(name: String) = println("Reading file: $name")
+class NormalFile(val name: String) : File {
+    override fun read() = println("Reading file: $name")
 }
 
 //Proxy:
-class SecuredFile : File {
-    val normalFile = NormalFile()
+class SecuredFile(val name: String) : File {
+    val normalFile = NormalFile(name)
     var password: String = ""
 
-    override fun read(name: String) {
+    override fun read() {
         if (password == "secret") {
             println("Password is correct: $password")
-            normalFile.read(name)
+            normalFile.read()
         } else {
             println("Incorrect password. Access denied!")
         }
@@ -22,9 +22,9 @@ class SecuredFile : File {
 }
 
 fun main(args: Array<String>) {
-    val securedFile = SecuredFile()
-    securedFile.read("readme.md")
+    val securedFile = SecuredFile("readme.md")
+    securedFile.read()
 
     securedFile.password = "secret"
-    securedFile.read("readme.md")
+    securedFile.read()
 }
